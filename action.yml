@@ -1,0 +1,13 @@
+name: 'proxy mallory action'
+description: 'set proxy on github runner (http proxy over ssh)'
+inputs:
+  arg1:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'node16'
+  main: 'index.js'
