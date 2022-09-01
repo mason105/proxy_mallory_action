@@ -9,8 +9,7 @@ async function main() {
     let myOutput = '';
     let myError = '';
   
-    return {
-      code: await exec.exec(command, args, {
+    await exec.exec(command, args, {
         listeners: {
           stdout: (data) => {
             myOutput += data.toString();
@@ -19,10 +18,11 @@ async function main() {
             myError += data.toString();
           },
         }
-      }),
-      stdout: myOutput,
-      stderr: myError,
-    };
+      })
+
+    console.log(myOutput)
+    console.log(myError)
+    // return result
 
     // await core.group('install pre-commit', async () => {
     //     // await exec.exec('pip', ['install', 'pre-commit']);
