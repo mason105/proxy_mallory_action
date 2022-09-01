@@ -18,9 +18,7 @@ async function main() {
           stderr: (data) => {
             myError += data.toString();
           },
-        },
-  
-        ...options,
+        }
       }),
       stdout: myOutput,
       stderr: myError,
