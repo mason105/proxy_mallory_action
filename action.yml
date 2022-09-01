@@ -3,7 +3,7 @@ description: 'set proxy on github runner (http proxy over ssh)'
 inputs:
   arg1:  # id of input
     description: 'Who to greet'
-    required: true
+    required: false
     default: 'World'
 outputs:
   time: # id of output
