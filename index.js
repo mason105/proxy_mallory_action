@@ -4,25 +4,42 @@ const exec = require('@actions/exec');
 
 
 async function main() {
-
+    command = 'ls';
+    args = [];
     let myOutput = '';
     let myError = '';
-
-    const options = {};
-    options.listeners = {
-    stdout: (data: Buffer) => {
-        myOutput += data.toString();
-    },
-    stderr: (data: Buffer) => {
-        myError += data.toString();
-    }
+  
+    return {
+      code: await exec.exec(command, args, {
+        listeners: {
+          stdout: (data) => {
+            myOutput += data.toString();
+          },
+          stderr: (data) => {
+            myError += data.toString();
+          },
+        },
+  
+        ...options,
+      }),
+      stdout: myOutput,
+      stderr: myError,
     };
-    options.cwd = './lib';
 
-    await core.group('install pre-commit', async () => {
-        // await exec.exec('pip', ['install', 'pre-commit']);
-        await exec.exec('ls', [], options);
-    });
+    // await core.group('install pre-commit', async () => {
+    //     // await exec.exec('pip', ['install', 'pre-commit']);
+    //     await exec.exec('ls', [], await exec(cmd, [], {
+    //         cwd,
+    //         listeners: {
+    //           stdout: (data: Buffer) => {
+    //             myOutput += data.toString().trim();
+    //           },
+    //           stderr: (data: Buffer) => {
+    //             myError += data.toString().trim();
+    //           }
+    //         }
+    //       }););
+    // });
 
 }
 
