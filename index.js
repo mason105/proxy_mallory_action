@@ -4,7 +4,7 @@ const exec = require('@actions/exec');
 
 
 async function main() {
-    command = 'ls';
+    command = 'pwd';
     args = [];
     let myOutput = '';
     let myError = '';
