@@ -2,17 +2,16 @@ const core = require('@actions/core');
 // const github = require('@actions/github');
 const exec = require('@actions/exec');
 const { config } = require('process');
-const { json } = require('stream/consumers');
 const fs = require('fs');
 
 
 async function main() {
     
-    const host = core.getInput('host');
-    const port = core.getInput('port');
-    const user = core.getInput('user');
-    const ssh_key = core.getInput('ssh_key');
-    const proxy_url = core.getInput('proxy_url');
+  var host = core.getInput('host');
+  var  port = core.getInput('port');
+  var user = core.getInput('user');
+  var ssh_key = core.getInput('ssh_key');
+  var  proxy_url = core.getInput('proxy_url');
 
 
     command = 'go install github.com/justmao945/mallory/cmd/mallory@latest';
@@ -33,14 +32,15 @@ async function main() {
 
     var buff = Buffer.from(ssh_key, 'base64'); // Ta-da
     let p_key = buff.toString('ascii');
-
+    
+    console.log("start prepare id_rsa_key")
     fs.writeFile('/tmp/id_rsa', p_key, err => {
       if (err) {
         console.error(err);
       }
       // file written successfully
     });
-
+    console.log("start prepare config file")
     config=
     {
         "id_rsa": "/tmp/id_rsa",
@@ -50,8 +50,8 @@ async function main() {
         "blocked": proxy_url.split(",")
     }
 
-      
-      fs.writeFile('/tmp/m_config.json', JSON.stringify(config), err => {
+
+    fs.writeFile('/tmp/m_config.json', JSON.stringify(config), err => {
         if (err) {
           console.error(err);
         }
@@ -59,6 +59,7 @@ async function main() {
       });
       command = " "
 
+      console.log("check p_key file")
       await exec.exec("cat /tmp/id_rsa", args, {
         listeners: {
           stdout: (data) => {
@@ -69,7 +70,8 @@ async function main() {
           },
         }
       })
-
+      
+      console.log("check config file")
       await exec.exec("cat /tmp/m_config.json", args, {
         listeners: {
           stdout: (data) => {
