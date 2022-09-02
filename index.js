@@ -41,7 +41,7 @@ async function main() {
       // file written successfully
     });
     console.log("start prepare config file")
-    config=
+    var m_config =
     {
         "id_rsa": "/tmp/id_rsa",
         "local_smart": ":1315",
@@ -51,7 +51,7 @@ async function main() {
     }
 
 
-    fs.writeFile('/tmp/m_config.json', JSON.stringify(config), err => {
+    fs.writeFile('/tmp/m_config.json', JSON.stringify(m_config), err => {
         if (err) {
           console.error(err);
         }
@@ -70,7 +70,7 @@ async function main() {
           },
         }
       })
-      
+
       console.log("check config file")
       await exec.exec("cat /tmp/m_config.json", args, {
         listeners: {
