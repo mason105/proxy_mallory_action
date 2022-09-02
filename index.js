@@ -4,7 +4,7 @@ const exec = require('@actions/exec');
 
 
 async function main() {
-    command = 'go get github.com/justmao945/mallory/cmd/mallory';
+    command = 'go install github.com/justmao945/mallory/cmd/mallory';
     args = [];
     let myOutput = '';
     let myError = '';
