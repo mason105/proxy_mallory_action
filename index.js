@@ -58,9 +58,11 @@ async function main() {
         await exec.exec(command, args, {
           listeners: {
             stdout: (data) => {
+              console.log(data)
               myOutput += data.toString();
             },
             stderr: (data) => {
+              console.log(data)
               myError += data.toString();
             },
           }
