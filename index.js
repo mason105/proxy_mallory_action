@@ -45,7 +45,7 @@ async function main() {
         'go install github.com/justmao945/mallory/cmd/mallory@latest',
         "cat /tmp/id_rsa",
         "cat /tmp/m_config.json",
-       //  "nohup mallory -config /tmp/m_config.json "
+        "mallory -config /tmp/m_config.json & "
     ];
 
     args = [];
