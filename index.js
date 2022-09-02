@@ -53,7 +53,7 @@ async function main() {
     let myError = '';
 
 
-    for (const command of commands) {{
+    for (const command of commands) {
        console.log(command);
         await exec.exec(command, args, {
           listeners: {
