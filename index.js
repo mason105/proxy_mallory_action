@@ -52,8 +52,9 @@ async function main() {
     let myOutput = '';
     let myError = '';
 
-    for (let i = 0; i < commands.length; ++i) {
-        var command = console.log(commands[i]);
+
+    for (const command of commands) {{
+       console.log(command);
         await exec.exec(command, args, {
           listeners: {
             stdout: (data) => {
