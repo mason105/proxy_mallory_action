@@ -7,39 +7,12 @@ const fs = require('fs');
 
 async function main() {
     
-  var host = core.getInput('host');
-  var  port = core.getInput('port');
-  var user = core.getInput('user');
-  var ssh_key = core.getInput('ssh_key');
-  var  proxy_url = core.getInput('proxy_url');
+    var host = core.getInput('host');
+    var port = core.getInput('port');
+    var user = core.getInput('user');
+    var ssh_key = core.getInput('ssh_key');
+    var proxy_url = core.getInput('proxy_url');
 
-
-    command = 'go install github.com/justmao945/mallory/cmd/mallory@latest';
-    args = [];
-    let myOutput = '';
-    let myError = '';
-  
-    await exec.exec(command, args, {
-        listeners: {
-          stdout: (data) => {
-            myOutput += data.toString();
-          },
-          stderr: (data) => {
-            myError += data.toString();
-          },
-        }
-      })
-
-    var buff = Buffer.from(ssh_key, 'base64'); // Ta-da
-    let p_key = buff.toString('ascii');
-    
-    console.log("start prepare id_rsa_key")
-    fs.writeFile('/tmp/id_rsa', p_key, err => {
-      if (err) {
-        console.error(err);
-      }
-      // file written successfully
-    });
     console.log("start prepare config file")
     var m_config =
     {
@@ -49,44 +22,54 @@ async function main() {
         "remote": "ssh://" + user + "@" + host + ":" + port,
         "blocked": proxy_url.split(",")
     }
-
-
     fs.writeFile('/tmp/m_config.json', JSON.stringify(m_config), err => {
         if (err) {
           console.error(err);
         }
         // file written successfully
-      });
-      command = " "
+    });
 
-      console.log("check p_key file")
-      await exec.exec("cat /tmp/id_rsa", args, {
-        listeners: {
-          stdout: (data) => {
-            myOutput += data.toString();
-          },
-          stderr: (data) => {
-            myError += data.toString();
-          },
-        }
-      })
 
-      console.log("check config file")
-      await exec.exec("cat /tmp/m_config.json", args, {
-        listeners: {
-          stdout: (data) => {
-            myOutput += data.toString();
-          },
-          stderr: (data) => {
-            myError += data.toString();
-          },
-        }
-      })
+    var buff = Buffer.from(ssh_key, 'base64'); // Ta-da
+    let p_key = buff.toString('ascii');
+    console.log("start prepare id_rsa_key")
+    fs.writeFile('/tmp/id_rsa', p_key, err => {
+      if (err) {
+        console.error(err);
+      }
+      // file written successfully
+    });
 
+    const commands = 
+    [
+        'go install github.com/justmao945/mallory/cmd/mallory@latest',
+        "cat /tmp/id_rsa",
+        "cat /tmp/m_config.json",
+        "mallory -config /tmp/m_config.json"
+    ];
+
+    args = [];
+    let myOutput = '';
+    let myError = '';
+
+    for (let i = 0; i < commands.length; ++i) {
+        var command = console.log(commands[i]);
+        await exec.exec(command, args, {
+          listeners: {
+            stdout: (data) => {
+              myOutput += data.toString();
+            },
+            stderr: (data) => {
+              myError += data.toString();
+            },
+          }
+        })
+        myOutput += "\r\n"
+        myError += "\r\n"
+    }
 
     console.log(myOutput)
     console.log(myError)
-
 }
 
 main().catch((e) => core.setFailed(e.message));
