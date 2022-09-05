@@ -62,7 +62,8 @@ WantedBy=default.target
         "sudo cp /tmp/mallory.service /lib/systemd/system/mallory.service",
         "sudo cp /home/runner/go/bin/mallory /usr/local/bin/mallory",
         "sudo service  mallory start",
-        "sudo service  mallory status"
+        "sudo service  mallory status",
+        "ip addr show eth0 | grep \"inet\b\" | awk '{print $2}' | cut -d/ -f1 > /tmp/ip"
     ];
 
     args = [];
@@ -91,6 +92,11 @@ WantedBy=default.target
     console.log(myError)
     core.setOutput("smart_proxy_port", 1315);
     core.setOutput("proxy_port", 1316);
+    
+
+    var ip = fs.readFileSync('/tmp/ip', 'asicc')
+    ip = ip.trim()
+    core.setOutput("proxy_host", ip);
 }
 
 main().catch((e) => core.setFailed(e.message));

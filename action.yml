@@ -23,7 +23,9 @@ inputs:
     default: ''
 
 outputs:
-  proxy_port: # id of output
+  proxy_host: # id of output
+    description: 'The host of proxy'
+  proxy_port: # port
     description: 'The http port that can be used in github runner. http_porxy=127.0.0.1:port'
   smart_proxy_port:
     description: 'Only urls that in proxy_url will be proxied'
