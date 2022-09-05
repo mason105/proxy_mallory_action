@@ -60,9 +60,9 @@ WantedBy=default.target
         "echo $GOPATH",
         "mkdir -p /usr/local/bin/",
         "sudo cp /tmp/mallory.service /lib/systemd/system/mallory.service",
-        //"sudo cp $GOPATH/mallory /usr/local/bin/mallor",
-        //"sudo service start mallory"
-        // "mallory -config /tmp/m_config.json & "
+        "sudo cp /home/runner/go/bin/mallory /usr/local/bin/mallory",
+        "sudo service  mallory start",
+        "sudo service  mallory status"
     ];
 
     args = [];
