@@ -1,3 +1,4 @@
+//https://github.com/docker/setup-buildx-action/issues/57
 const core = require('@actions/core');
 // const github = require('@actions/github');
 const exec = require('@actions/exec');
@@ -73,6 +74,7 @@ async function main() {
 
     console.log(myOutput)
     console.log(myError)
+    // core.setOutput("time", time);
 }
 
 main().catch((e) => core.setFailed(e.message));
