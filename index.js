@@ -6,6 +6,14 @@ const { config } = require('process');
 const fs = require('fs');
 
 
+function writeFile(path, content ){
+  fs.writeFile(path ,content, err => {
+    if (err) {
+      console.error(err);
+    }
+    // file written successfully
+});
+}
 async function main() {
     
     var host = core.getInput('host');
@@ -23,37 +31,44 @@ async function main() {
         "remote": "ssh://" + user + "@" + host + ":" + port,
         "blocked": proxy_url.split(",")
     }
-    fs.writeFile('/tmp/m_config.json', JSON.stringify(m_config), err => {
-        if (err) {
-          console.error(err);
-        }
-        // file written successfully
-    });
+    writeFile('/tmp/m_config.json',  JSON.stringify(m_config))
 
-
+    console.log("start prepare id_rsa_key")
     var buff = Buffer.from(ssh_key, 'base64'); // Ta-da
     let p_key = buff.toString('ascii');
-    console.log("start prepare id_rsa_key")
-    fs.writeFile('/tmp/id_rsa', p_key, err => {
-      if (err) {
-        console.error(err);
-      }
-      // file written successfully
-    });
+    writeFile('/tmp/id_rsa',  p_key)
+    writeFile('/tmp/mallory.service',`
+[Unit]
+Description=HTTP/HTTPS proxy over SSH
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/mallory -config /tmp/m_config.json
+ExecReload=/usr/local/bin/mallory -reload
+Restart=always
+
+[Install]
+WantedBy=default.target
+    `)
 
     var commands = 
     [
         'go install github.com/justmao945/mallory/cmd/mallory@latest',
         "cat /tmp/id_rsa",
         "cat /tmp/m_config.json",
-        "whoami"
+        "echo $GOPATH",
+        "ls $GOPATH",
+        "mkdir -p /usr/local/bin/",
+        "sudo cp $GOPATH/mallory /usr/local/bin/mallor",
+        "sudo cp /tmp/mallory.service /lib/systemd/system/mallory.service",
+        "sudo service start mallory"
         // "mallory -config /tmp/m_config.json & "
     ];
 
     args = [];
     let myOutput = '';
     let myError = '';
-
 
     for (const command of commands) {
        console.log(command);
