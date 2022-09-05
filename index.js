@@ -63,7 +63,7 @@ WantedBy=default.target
         "sudo cp /home/runner/go/bin/mallory /usr/local/bin/mallory",
         "sudo service  mallory start",
         "sudo service  mallory status",
-        "ip addr show eth0 | grep \"inet\b\" | awk '{print $2}' | cut -d/ -f1 > /tmp/ip"
+        "ip addr show eth0 | grep \"inet\\b\" | awk '{print $2}' | cut -d/ -f1 > /tmp/ip"
     ];
 
     args = [];
