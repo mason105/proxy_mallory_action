@@ -58,11 +58,10 @@ WantedBy=default.target
         "cat /tmp/id_rsa",
         "cat /tmp/m_config.json",
         "echo $GOPATH",
-        "ls $GOPATH",
         "mkdir -p /usr/local/bin/",
-        "sudo cp $GOPATH/mallory /usr/local/bin/mallor",
         "sudo cp /tmp/mallory.service /lib/systemd/system/mallory.service",
-        "sudo service start mallory"
+        //"sudo cp $GOPATH/mallory /usr/local/bin/mallor",
+        //"sudo service start mallory"
         // "mallory -config /tmp/m_config.json & "
     ];
 
