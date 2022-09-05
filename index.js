@@ -1,5 +1,6 @@
 //https://github.com/docker/setup-buildx-action/issues/57
 const core = require('@actions/core');
+var os = require('os');
 // const github = require('@actions/github');
 const exec = require('@actions/exec');
 const { config } = require('process');
@@ -61,7 +62,6 @@ WantedBy=default.target
         "mkdir -p /usr/local/bin/",
         "sudo cp /tmp/mallory.service /lib/systemd/system/mallory.service",
         "sudo cp /home/runner/go/bin/mallory /usr/local/bin/mallory",
-        "ip addr show eth0 | grep \"inet\\b\" | awk '{print $2}' | cut -d/ -f1 > /tmp/ip",
         "sudo service  mallory start",
         "sudo service  mallory status"
     ];
@@ -94,9 +94,21 @@ WantedBy=default.target
     core.setOutput("proxy_port", 1316);
     
 
-    var ip = fs.readFileSync('/tmp/ip', 'asicc')
-    ip = ip.trim()
-    core.setOutput("proxy_host", ip);
+    
+
+    var interfaces = os.networkInterfaces();
+    var addresses = [];
+    for (var k in interfaces) {
+        for (var k2 in interfaces[k]) {
+            var address = interfaces[k][k2];
+            if (address.family === 'IPv4' && !address.internal) {
+                addresses.push(address.address);
+            }
+        }
+    }
+
+    console.log(addresses);
+    core.setOutput("proxy_host", addresses[0]);
 }
 
 main().catch((e) => core.setFailed(e.message));
