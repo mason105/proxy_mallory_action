@@ -89,7 +89,8 @@ WantedBy=default.target
 
     console.log(myOutput)
     console.log(myError)
-    // core.setOutput("time", time);
+    core.setOutput("smart_proxy_port", 1315);
+    core.setOutput("proxy_port", 1316);
 }
 
 main().catch((e) => core.setFailed(e.message));

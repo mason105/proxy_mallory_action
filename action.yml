@@ -2,15 +2,15 @@ name: 'proxy mallory action'
 description: 'set proxy on github runner (http proxy over ssh)'
 inputs:
   host:  # id of input
-    description: 'Who to greet'
+    description: 'host'
     required: true
     default: ''
   port:  # id of input
-    description: 'Who to greet'
+    description: 'port'
     required: true
     default: ''
   user:  # id of input
-    description: 'Who to greet'
+    description: 'user name'
     required: true
     default: ''
   ssh_key:  # id of input
@@ -25,6 +25,8 @@ inputs:
 outputs:
   proxy_port: # id of output
     description: 'The http port that can be used in github runner. http_porxy=127.0.0.1:port'
+  smart_proxy_port:
+    description: 'Only urls that in proxy_url will be proxied'
 runs:
   using: 'node16'
   main: 'index.js'
